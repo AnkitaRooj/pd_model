@@ -1,7 +1,0 @@
-stages:
-  data_ingest_preprocess:
-    cmd: python src/data_clean.py
-    deps:
-    - src/data_clean.py
-    outs:
-    - datasets/processed
