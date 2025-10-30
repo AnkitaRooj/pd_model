@@ -1,0 +1,104 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/data_clean.py
+    deps:
+    - path: src/data_clean.py
+      hash: md5
+      md5: fdead7dab2a13995f7f64ec2c253e789
+      size: 1411
+    outs:
+    - path: datasets/processed
+      hash: md5
+      md5: 432c2d9107253a5f8dc885d1ebb2e6ea.dir
+      size: 1772730
+      nfiles: 1
+  data_preprocessing:
+    cmd: python src/data_preprocess.py
+    deps:
+    - path: datasets/processed
+      hash: md5
+      md5: 432c2d9107253a5f8dc885d1ebb2e6ea.dir
+      size: 1772730
+      nfiles: 1
+    - path: src/data_clean.py
+      hash: md5
+      md5: fdead7dab2a13995f7f64ec2c253e789
+      size: 1411
+    - path: src/data_preprocess.py
+      hash: md5
+      md5: 07d5d9f0dd39ed6df4bd6c853c3fa201
+      size: 2255
+    outs:
+    - path: datasets/features
+      hash: md5
+      md5: 4de4b39f0fe74363bf7a2ae15f6bf8cd.dir
+      size: 5040129
+      nfiles: 1
+  model_build:
+    cmd: python src/model_build.py
+    deps:
+    - path: datasets/features
+      hash: md5
+      md5: 4de4b39f0fe74363bf7a2ae15f6bf8cd.dir
+      size: 5040129
+      nfiles: 1
+    - path: src/data_clean.py
+      hash: md5
+      md5: fdead7dab2a13995f7f64ec2c253e789
+      size: 1411
+    - path: src/data_preprocess.py
+      hash: md5
+      md5: 07d5d9f0dd39ed6df4bd6c853c3fa201
+      size: 2255
+    - path: src/model_build.py
+      hash: md5
+      md5: acff5839e5596690e935a18ef4cc2bd4
+      size: 5427
+    outs:
+    - path: assets
+      hash: md5
+      md5: d42b9a1d38b3f9bcbc6b4f7d5373a8d6.dir
+      size: 92
+      nfiles: 1
+    - path: datasets/splitted_data
+      hash: md5
+      md5: d99675b28a787db786331f93e8b8fe6e.dir
+      size: 7872736
+      nfiles: 4
+    - path: models
+      hash: md5
+      md5: 2ffded93046adad7609d1eb10c71e014.dir
+      size: 1427624
+      nfiles: 1
+  model_evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: datasets/splitted_data
+      hash: md5
+      md5: d99675b28a787db786331f93e8b8fe6e.dir
+      size: 7872736
+      nfiles: 4
+    - path: models
+      hash: md5
+      md5: 2ffded93046adad7609d1eb10c71e014.dir
+      size: 1427624
+      nfiles: 1
+    - path: src/data_clean.py
+      hash: md5
+      md5: fdead7dab2a13995f7f64ec2c253e789
+      size: 1411
+    - path: src/data_preprocess.py
+      hash: md5
+      md5: 07d5d9f0dd39ed6df4bd6c853c3fa201
+      size: 2255
+    - path: src/evaluate.py
+      hash: md5
+      md5: c3d59c9c1f98b60b81df77dfca684d3d
+      size: 2904
+    outs:
+    - path: metrics
+      hash: md5
+      md5: cee59da06814683b6b0ac092565774cd.dir
+      size: 12884
+      nfiles: 2

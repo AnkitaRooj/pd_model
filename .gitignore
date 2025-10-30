@@ -1,0 +1,6 @@
+/models
+/assets
+/metrics
+# MLflow local tracking files
+mlruns/
+mlartifacts/

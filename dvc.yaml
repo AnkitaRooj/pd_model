@@ -1,0 +1,36 @@
+stages:
+  data_ingestion:
+    cmd: python src/data_clean.py
+    deps:
+    - src/data_clean.py
+    outs:
+    - datasets/processed
+  data_preprocessing:
+    cmd: python src/data_preprocess.py
+    deps:
+    - datasets/processed
+    - src/data_clean.py
+    - src/data_preprocess.py
+    outs:
+    - datasets/features
+  model_build:
+    cmd: python src/model_build.py
+    deps:
+    - datasets/features
+    - src/data_clean.py
+    - src/data_preprocess.py
+    - src/model_build.py
+    outs:
+    - assets
+    - datasets/splitted_data
+    - models
+  model_evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - datasets/splitted_data
+    - models
+    - src/data_clean.py
+    - src/data_preprocess.py
+    - src/evaluate.py
+    outs:
+    - metrics
